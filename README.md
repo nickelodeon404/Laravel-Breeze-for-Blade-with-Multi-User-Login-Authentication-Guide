@@ -1,4 +1,6 @@
 # Laravel-Breeze-for-Blade-with-Multi-User-Login-Authentication-Guide
+CREATE MULTI USER IN LARAVEL BREEZE
+
 Step 1: Add Role to the users table migration "database/migrations/xxxx_xx_xx_000000_users_table.php".
 
     $table->enum('role', ['admin', 'seller', 'customer'])->default('customer'); //change to your prefered roles
@@ -107,6 +109,35 @@ Step 5: Create a Role Middleware.
                  abort(403, 'Unauthorized access.');
              }
 
+             return $next($request);
+         }
+     }
+
+     // OR Use this one if you want to make to share route the same route for users
+     For Example: Route::middleware(['auth', 'role:admin,seller'])->group(function () {
+    			Route::get('/sales/reports', [SalesReportController::class, 'index'])->name("sales.reports");
+		});
+
+     <?php
+
+     namespace App\Http\Middleware;
+
+     use Closure;
+     use Illuminate\Http\Request;
+     use Symfony\Component\HttpFoundation\Response;
+
+     class RoleMiddleware
+     {
+         /**
+          * Handle an incoming request.
+          *
+          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+          */
+         public function handle(Request $request, Closure $next, ...$roles): Response
+         {
+              if (! $request->user() || !in_array($request->user()->role, $roles)) {
+                 abort(403, 'Unauthorized access.');
+             }
              return $next($request);
          }
      }
