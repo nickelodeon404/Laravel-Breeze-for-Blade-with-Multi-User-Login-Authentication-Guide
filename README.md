@@ -8,7 +8,6 @@ php artisan breeze:install
 php artisan migrate
 npm install
 
-
 Step 1: Add Role to the users table migration "database/migrations/xxxx_xx_xx_000000_users_table.php".
 
     $table->enum('role', ['admin', 'seller', 'customer'])->default('customer'); //change to your prefered roles
