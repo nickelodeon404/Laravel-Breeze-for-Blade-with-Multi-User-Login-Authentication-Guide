@@ -285,5 +285,7 @@ Final Step: Migrate and Serve then Test
 
 	php artisan migrate:fresh
 	
+ npm run build
+
 	php artisan serve
 
