@@ -2,10 +2,9 @@
 CREATE MULTI USER IN LARAVEL BREEZE
 
 First you need to install larel breeze
-php artisan breeze:install
-
 
 composer require laravel/breeze --dev
+php artisan breeze:install
 php artisan migrate
 npm install
 
