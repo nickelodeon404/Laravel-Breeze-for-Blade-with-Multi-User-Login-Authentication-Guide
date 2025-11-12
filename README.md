@@ -1,7 +1,7 @@
 # Laravel-Breeze-for-Blade-with-Multi-User-Login-Authentication-Guide
 CREATE MULTI USER IN LARAVEL BREEZE
 
-First you need to install larel breeze
+First you need to install laravel breeze
 
   composer require laravel/breeze --dev
 
