@@ -284,8 +284,6 @@ Step 9: Edit the Routes in web.php
 Final Step: Migrate and Serve then Test
 
 	php artisan migrate:fresh
-	
- npm run build
-
+	npm run build
 	php artisan serve
 
