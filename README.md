@@ -99,59 +99,59 @@ Step 5: Create a Role Middleware.
      // Open the Role.php and paste this code
 
      
-     <?php
+    <?php
 
-     namespace App\Http\Middleware;
+    namespace App\Http\Middleware;
 
-     use Closure;
-     use Illuminate\Http\Request;
-     use Symfony\Component\HttpFoundation\Response;
+    use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
-     class Role
-     {
-         /**
-          * Handle an incoming request.
-          *
-          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-          */
-         public function handle(Request $request, Closure $next, string $role): Response
-         {
-             if (! $request->user() || $request->user()->role !== $role) {
-                 abort(403, 'Unauthorized access.');
-             }
+    class Role
+    {
+        /**
+        * Handle an incoming request.
+        *
+        * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+        */
+        public function handle(Request $request, Closure $next, string $role): Response
+        {
+            if (! $request->user() || $request->user()->role !== $role) {
+                abort(403, 'Unauthorized access.');
+            }
 
-             return $next($request);
-         }
-     }
+            return $next($request);
+        }
+    }
 
 // OR Use this one if you want to make to share route the same route for users
      For Example: Route::middleware(['auth', 'role:admin,seller'])->group(function () {
     			Route::get('/sales/reports', [SalesReportController::class, 'index'])->name("sales.reports");
 		});
 
-     <?php
+    <?php
 
-     namespace App\Http\Middleware;
+    namespace App\Http\Middleware;
 
-     use Closure;
-     use Illuminate\Http\Request;
-     use Symfony\Component\HttpFoundation\Response;
+    use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
-     class RoleMiddleware
-     {
-         /**
-          * Handle an incoming request.
-          *
-          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-          */
-         public function handle(Request $request, Closure $next, ...$roles): Response
-         {
-              if (! $request->user() || !in_array($request->user()->role, $roles)) {
-                 abort(403, 'Unauthorized access.');
-             }
-             return $next($request);
-         }
-     }
+    class RoleMiddleware
+    {
+        /**
+        * Handle an incoming request.
+        *
+        * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+        */
+        public function handle(Request $request, Closure $next, ...$roles): Response
+        {
+            if (! $request->user() || !in_array($request->user()->role, $roles)) {
+                abort(403, 'Unauthorized access.');
+            }
+            return $next($request);
+        }
+    }
 
 
 Step 6: Edit the app.php "bootstrap/app.php" and add the middleware alias of role
