@@ -45,21 +45,17 @@ Step 3: Edit the public function store of RegisteredUserController.php "app/Http
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'role' => ['required', 'string', 'in:admin,seller,customer'], // add this
-            'fname' => ['required', 'string', 'max:255'],
-            'mname' => ['nullable', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'role' => ['required', 'string', 'in:admin,seller,customer'], // add this
         ]);
 
         $user = User::create([
-            'role' => $request->role, // add this
-            'fname' => $request->fname,
-            'mname' => $request->mname,
-            'lname' => $request->lname,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+			'role' => $request->role, // add this
         ]);
 
         event(new Registered($user));
