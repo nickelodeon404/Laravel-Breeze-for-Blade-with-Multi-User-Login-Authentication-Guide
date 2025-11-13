@@ -181,7 +181,7 @@ Step 6: Edit the app.php "bootstrap/app.php" and add the middleware alias of rol
 Step 7: Create the dashboards for multi-user in "resources/views" folder
 
 	// For Admin
-	php artisan make:view admin/dashboar
+	php artisan make:view admin/dashboard
 	// For Seller
 	php artisan make:view seller/dashboard
 	// For Customer
