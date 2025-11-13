@@ -133,7 +133,7 @@ Step 5: Create a Role Middleware.
     use Illuminate\Http\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    class RoleMiddleware
+    class Role
     {
         /**
         * Handle an incoming request.
