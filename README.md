@@ -265,14 +265,14 @@ Step 9: Edit the Routes in web.php
 	});
 	
 	Route::get('dashboard', function () {
-	    $user = auth()->user();
-	
-	    return match (true) {
-	        $user->hasRole('admin') => redirect()->route('admin.dashboard'),
-	        $user->hasRole('seller') => redirect()->route('seller.dashboard'),
-	        $user->hasRole('customer') => redirect()->route('customer.dashboard'),
-	        default => abort(403, 'Unauthorized action.'),
-	    };
+    $user = auth()->user();
+
+    return match (true) {
+        $user->isAdmin() => redirect()->route('admin.dashboard'),
+        $user->isSeller() => redirect()->route('seller.dashboard'),
+        $user->isCustomer() => redirect()->route('customer.dashboard'),
+        default => abort(403, 'Unauthorized action.'),
+    };
 	})->middleware(['auth'])->name('dashboard');
 	
 	
