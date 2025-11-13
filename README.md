@@ -156,26 +156,26 @@ Step 5: Create a Role Middleware.
 
 Step 6: Edit the app.php "bootstrap/app.php" and add the middleware alias of role
       
-      <?php
+    <?php
 
-      use Illuminate\Foundation\Application;
-      use Illuminate\Foundation\Configuration\Exceptions;
-      use Illuminate\Foundation\Configuration\Middleware;
+    use Illuminate\Foundation\Application;
+    use Illuminate\Foundation\Configuration\Exceptions;
+    use Illuminate\Foundation\Configuration\Middleware;
 
-      return Application::configure(basePath: dirname(__DIR__))
-          ->withRouting(
-              web: __DIR__.'/../routes/web.php',
-              commands: __DIR__.'/../routes/console.php',
-              health: '/up',
-          )
-          ->withMiddleware(function (Middleware $middleware): void {
-              $middleware->alias([
-                  'role' => App\Http\Middleware\Role::class,
-              ]); // add this code
+    return Application::configure(basePath: dirname(__DIR__))
+        ->withRouting(
+            web: __DIR__.'/../routes/web.php',
+            commands: __DIR__.'/../routes/console.php',
+            health: '/up',
+        )
+        ->withMiddleware(function (Middleware $middleware): void {
+            $middleware->alias([
+                'role' => App\Http\Middleware\Role::class,
+            ]); // add this code
           })
-          ->withExceptions(function (Exceptions $exceptions): void {
-              //
-          })->create();
+        ->withExceptions(function (Exceptions $exceptions): void {
+            //
+        })->create();
      
 
 Step 7: Create the dashboards for multi-user in "resources/views" folder
