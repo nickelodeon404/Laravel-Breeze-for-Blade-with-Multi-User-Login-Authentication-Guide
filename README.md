@@ -290,6 +290,21 @@ Step 9: Edit the Routes in web.php
 	});
 	require __DIR__.'/auth.php';
 
+OR Use this for dashboard routes:
+
+	Route::get('dashboard', function () {
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->hasRole('seller')) {
+        return redirect()->route('seller.dashboard');
+    } elseif ($user->hasRole('customer')) {
+        return redirect()->route('customer.dashboard');
+    }
+    abort(403, 'Unauthorized action.');
+	})->middleware(['auth'])->name('dashboard');
+
 
 Final Step: Migrate and Serve then Test
 
