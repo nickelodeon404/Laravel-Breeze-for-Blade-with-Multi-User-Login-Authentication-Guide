@@ -1,15 +1,16 @@
 # Laravel-Breeze-for-Blade-with-Multi-User-Login-Authentication-Guide
+
 CREATE MULTI USER IN LARAVEL BREEZE
 
 First you need to install laravel breeze
 
-  composer require laravel/breeze --dev
+	composer require laravel/breeze --dev
 
-  php artisan breeze:install
+  	php artisan breeze:install
 
-  php artisan migrate
+  	php artisan migrate
 
-  npm install
+  	npm install
 
 Step 1: Add Role to the users table migration "database/migrations/xxxx_xx_xx_000000_users_table.php".
 
@@ -123,7 +124,7 @@ Step 5: Create a Role Middleware.
          }
      }
 
-     // OR Use this one if you want to make to share route the same route for users
+// OR Use this one if you want to make to share route the same route for users
      For Example: Route::middleware(['auth', 'role:admin,seller'])->group(function () {
     			Route::get('/sales/reports', [SalesReportController::class, 'index'])->name("sales.reports");
 		});
@@ -180,15 +181,15 @@ Step 6: Edit the app.php "bootstrap/app.php" and add the middleware alias of rol
 Step 7: Create the dashboards for multi-user in "resources/views" folder
 
 	// For Admin
-	resources/views/admin/dashboard.blade.php
+	php artisan make:view admin/dashboar
 	// For Seller
-	reresources/views/seller/dashboard.blade.php
+	php artisan make:view seller/dashboard
 	// For Customer
-	resources/views/customer/dashboard.blade.php
+	php artisan make:view customer/dashboard
 
 Step 8: Create the controllers for the multi-user dashboards
 
-	// For Admin
+// For Admin
 
 	php artisan make:controller Admin/DashboardController
 	
@@ -209,7 +210,7 @@ Step 8: Create the controllers for the multi-user dashboards
     		     }
 		}
 
-	// For Seller
+// For Seller
 
 	php artisan make:controller Seller/DashboardController
 
@@ -230,8 +231,7 @@ Step 8: Create the controllers for the multi-user dashboards
     		     }
 		}
 
-
-	// For Customer
+// For Customer
 
 	php artisan make:controller Customer/DashboardController
 
@@ -256,54 +256,52 @@ Step 8: Create the controllers for the multi-user dashboards
 Step 9: Edit the Routes in web.php 
 
 	<?php
-
+	
 	use App\Http\Controllers\ProfileController;
 	use Illuminate\Support\Facades\Route;
-
+	
 	use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 	use App\Http\Controllers\Seller\DashboardController as SellerDashboardController;
 	use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
-
+	
 	Route::get('/', function () {
 	    return view('welcome');
 	});
-
+	
+	Route::get('dashboard', function () {
+	    $user = auth()->user();
+	
+	    return match (true) {
+	        $user->hasRole('admin') => redirect()->route('admin.dashboard'),
+	        $user->hasRole('seller') => redirect()->route('seller.dashboard'),
+	        $user->hasRole('customer') => redirect()->route('customer.dashboard'),
+	        default => abort(403, 'Unauthorized action.'),
+	    };
+	})->middleware(['auth'])->name('dashboard');
+	
+	
 	Route::middleware('auth')->group(function () {
 	    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 	    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 	});
-
+	
 	// Admin Routes
 	Route::middleware(['auth', 'role:admin'])->group(function () {
 	    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard'); // Admin Dashboard
 	});
-
+	
 	// Seller Routes
 	Route::middleware(['auth', 'role:seller'])->group(function () {
 	    Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])->name('seller.dashboard'); // Seller Dashboard
 	});
-
+	
 	// Customer Routes
 	Route::middleware(['auth', 'role:customer'])->group(function () {
 	    Route::get('/customer/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard'); // Customer Dashboard
 	});
+	
 	require __DIR__.'/auth.php';
-
-OR Use this for dashboard routes:
-
-	Route::get('dashboard', function () {
-    $user = auth()->user();
-
-    if ($user->hasRole('admin')) {
-        return redirect()->route('admin.dashboard');
-    } elseif ($user->hasRole('seller')) {
-        return redirect()->route('seller.dashboard');
-    } elseif ($user->hasRole('customer')) {
-        return redirect()->route('customer.dashboard');
-    }
-    abort(403, 'Unauthorized action.');
-	})->middleware(['auth'])->name('dashboard');
 
 
 Final Step: Migrate and Serve then Test
