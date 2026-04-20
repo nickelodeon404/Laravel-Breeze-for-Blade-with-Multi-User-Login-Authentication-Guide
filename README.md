@@ -87,12 +87,14 @@ Step 4: Edit the public function store of AuthenticatedSessionController "app/Ht
 
 
 Step 5: Create a Role Middleware.
+
+	//For Single Route Example: Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 	
      command:
 
      php artisan make:middleware Role // This will create Role.php in "app/Http/Middleware" folder
 
-     // Open the Role.php and paste this code
+     // Open the Role.php and paste this code 
 
      
     <?php
@@ -120,13 +122,15 @@ Step 5: Create a Role Middleware.
         }
     }
 
-// OR Use this one if you want to make to share route the same route for users
+	// OR Use this one if you want to make to share route the same route for users
      For Example: Route::middleware(['auth', 'role:admin,seller'])->group(function () {
     			Route::get('/sales/reports', [SalesReportController::class, 'index'])->name("sales.reports");
 		});
 
-    <?php
+	//For Group Route Example: Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+    <?php
+	
     namespace App\Http\Middleware;
 
     use Closure;
